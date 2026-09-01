@@ -52,6 +52,7 @@ export class ProductsService {
     return {
       isCorrect: false,
       message: 'Incorrect answer',
+      correctNumber: product.productNumber,
     };
   }
 }

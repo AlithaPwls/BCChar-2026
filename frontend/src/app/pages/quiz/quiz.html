@@ -1,0 +1,32 @@
+@if (categoryId() === null) {
+  <h1>Kies een categorie</h1>
+  <ul>
+    @for (category of categories(); track category.id) {
+      <li>
+        <button type="button" (click)="selectCategory(category.id)">
+          {{ category.name }}
+        </button>
+      </li>
+    }
+  </ul>
+} @else {
+  <button type="button" (click)="chooseOtherCategory()">Andere categorie</button>
+
+  @if (product()) {
+    <h1>{{ product()!.name }}</h1>
+
+    <label>
+      Nummer
+      <input type="number" [(ngModel)]="answer" />
+    </label>
+    <button type="button" (click)="submitAnswer()">Controleer</button>
+
+    @if (result()) {
+      <p>{{ result()!.message }}</p>
+      @if (!result()!.isCorrect && result()!.correctNumber !== undefined) {
+        <p>Juiste nummer: {{ result()!.correctNumber }}</p>
+      }
+      <button type="button" (click)="loadNextProduct()">Volgende product</button>
+    }
+  }
+}
