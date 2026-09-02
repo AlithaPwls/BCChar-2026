@@ -1,1 +1,50 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  --color-beige: #978985;
+  --color-blue-light: #b8d1ea;
+  --color-blue-dark: #011d43;
+  --color-bg: #12162e;
+  --color-text: #ffffff;
+  --color-surface: #ffffff;
+  --color-on-surface: #000000;
+  --font-family: 'Roboto Slab', serif;
+  --space-xs: 0.5rem;
+  --space-sm: 0.75rem;
+  --space-md: 1.25rem;
+  --space-lg: 2rem;
+  --space-xl: 3rem;
+  --max-width: 28rem;
+  --ease: 180ms ease;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  font-family: var(--font-family);
+  background: var(--color-bg);
+  color: var(--color-text);
+  -webkit-font-smoothing: antialiased;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-blue-light);
+  outline-offset: 3px;
+}

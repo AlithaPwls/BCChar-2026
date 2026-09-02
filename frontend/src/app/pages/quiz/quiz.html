@@ -1,32 +1,88 @@
-@if (categoryId() === null) {
-  <h1>Kies een categorie</h1>
-  <ul>
-    @for (category of categories(); track category.id) {
-      <li>
-        <button type="button" (click)="selectCategory(category.id)">
-          {{ category.name }}
+<section class="quiz">
+  <header class="quiz__brand">
+    <p class="quiz__logo">Bakkerij Carl</p>
+  </header>
+
+  @if (categoryId() === null) {
+    <div class="quiz__pick">
+      <h1 class="quiz__prompt">Kies een categorie</h1>
+      <ul class="quiz__categories">
+        @for (category of categories(); track category.id) {
+          <li>
+            <button
+              type="button"
+              class="quiz__category-btn"
+              (click)="selectCategory(category.id)"
+            >
+              {{ category.name }}
+            </button>
+          </li>
+        }
+      </ul>
+    </div>
+  } @else {
+    <div class="quiz__question">
+      <div class="quiz__meta">
+        <p class="quiz__category">{{ selectedCategoryName() }}</p>
+        <button
+          type="button"
+          class="quiz__link"
+          (click)="chooseOtherCategory()"
+        >
+          Andere categorie
         </button>
-      </li>
-    }
-  </ul>
-} @else {
-  <button type="button" (click)="chooseOtherCategory()">Andere categorie</button>
+      </div>
 
-  @if (product()) {
-    <h1>{{ product()!.name }}</h1>
+      @if (product(); as currentProduct) {
+        @for (key of [productAnimKey()]; track key) {
+          <div class="quiz__product">
+            <h1 class="quiz__product-name">{{ currentProduct.name }}</h1>
 
-    <label>
-      Nummer
-      <input type="number" [(ngModel)]="answer" />
-    </label>
-    <button type="button" (click)="submitAnswer()">Controleer</button>
+            <label class="quiz__field">
+              <span class="quiz__label">Nummer</span>
+              <input
+                class="quiz__input"
+                type="number"
+                inputmode="numeric"
+                [(ngModel)]="answer"
+              />
+            </label>
 
-    @if (result()) {
-      <p>{{ result()!.message }}</p>
-      @if (!result()!.isCorrect && result()!.correctNumber !== undefined) {
-        <p>Juiste nummer: {{ result()!.correctNumber }}</p>
+            <button
+              type="button"
+              class="quiz__btn quiz__btn--primary"
+              (click)="submitAnswer()"
+            >
+              Controleer
+            </button>
+
+            @if (result(); as currentResult) {
+              <div
+                class="quiz__result"
+                [class.quiz__result--correct]="currentResult.isCorrect"
+                [class.quiz__result--incorrect]="!currentResult.isCorrect"
+              >
+                <p class="quiz__result-message">{{ currentResult.message }}</p>
+                @if (
+                  !currentResult.isCorrect &&
+                  currentResult.correctNumber !== undefined
+                ) {
+                  <p class="quiz__result-answer">
+                    Juiste nummer: {{ currentResult.correctNumber }}
+                  </p>
+                }
+                <button
+                  type="button"
+                  class="quiz__btn quiz__btn--secondary"
+                  (click)="loadNextProduct()"
+                >
+                  Volgende product
+                </button>
+              </div>
+            }
+          </div>
+        }
       }
-      <button type="button" (click)="loadNextProduct()">Volgende product</button>
-    }
+    </div>
   }
-}
+</section>

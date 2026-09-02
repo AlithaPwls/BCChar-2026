@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../core/api';
 
@@ -6,6 +6,7 @@ import { ApiService } from '../../core/api';
   selector: 'app-quiz',
   imports: [FormsModule],
   templateUrl: './quiz.html',
+  styleUrl: './quiz.css',
 })
 export class Quiz implements OnInit {
   private api = inject(ApiService);
@@ -19,6 +20,17 @@ export class Quiz implements OnInit {
     message: string;
     correctNumber?: number;
   } | null>(null);
+
+  selectedCategoryName = computed(() => {
+    const id = this.categoryId();
+    if (id === null) {
+      return null;
+    }
+    return this.categories().find((category) => category.id === id)?.name ?? null;
+  });
+
+  /** Bumps on each product load so the enter animation can re-run. */
+  productAnimKey = signal(0);
 
   ngOnInit() {
     this.api.getCategories().subscribe((data) => {
@@ -42,6 +54,7 @@ export class Quiz implements OnInit {
 
     this.api.getRandomProduct(categoryId).subscribe((data) => {
       this.product.set(data as { id: number; name: string });
+      this.productAnimKey.update((key) => key + 1);
     });
   }
 
