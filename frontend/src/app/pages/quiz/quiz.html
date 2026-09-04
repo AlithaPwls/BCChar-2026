@@ -22,6 +22,7 @@
     </div>
   } @else {
     <div class="quiz__question">
+      
       <div class="quiz__meta">
         <p class="quiz__category">{{ selectedCategoryName() }}</p>
         <button
@@ -38,23 +39,28 @@
           <div class="quiz__product">
             <h1 class="quiz__product-name">{{ currentProduct.name }}</h1>
 
-            <label class="quiz__field">
-              <span class="quiz__label">Nummer</span>
-              <input
-                class="quiz__input"
-                type="number"
-                inputmode="numeric"
-                [(ngModel)]="answer"
-              />
-            </label>
+            <form class="quiz__form" (ngSubmit)="onEnter()">
+              <label class="quiz__field">
+                <span class="quiz__label">Nummer</span>
+                <input
+                  #answerInput
+                  class="quiz__input"
+                  type="number"
+                  name="answer"
+                  inputmode="numeric"
+                  [(ngModel)]="answer"
+                  [class.quiz__input--correct]="result()?.isCorrect === true"
+                  [class.quiz__input--incorrect]="result()?.isCorrect === false"
+                />
+              </label>
 
-            <button
-              type="button"
-              class="quiz__btn quiz__btn--primary"
-              (click)="submitAnswer()"
-            >
-              Controleer
-            </button>
+              <button
+                type="submit"
+                class="quiz__btn quiz__btn--primary"
+              >
+                Controleer
+              </button>
+            </form>
 
             @if (result(); as currentResult) {
               <div

@@ -152,6 +152,20 @@
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-blue-light) 45%, transparent);
 }
 
+.quiz__input--correct,
+.quiz__input--correct:focus {
+  border-color: #2e7d32;
+  background: color-mix(in srgb, #2e7d32 18%, var(--color-surface));
+  box-shadow: 0 0 0 3px color-mix(in srgb, #2e7d32 35%, transparent);
+}
+
+.quiz__input--incorrect,
+.quiz__input--incorrect:focus {
+  border-color: #c62828;
+  background: color-mix(in srgb, #c62828 16%, var(--color-surface));
+  box-shadow: 0 0 0 3px color-mix(in srgb, #c62828 35%, transparent);
+}
+
 .quiz__input::-webkit-outer-spin-button,
 .quiz__input::-webkit-inner-spin-button {
   -webkit-appearance: none;
@@ -165,6 +179,7 @@
 
 .quiz__btn {
   display: inline-flex;
+  margin-top: var(--space-lg);
   align-items: center;
   justify-content: center;
   width: 100%;

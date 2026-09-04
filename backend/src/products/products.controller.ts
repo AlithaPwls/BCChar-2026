@@ -12,10 +12,30 @@ export class ProductsController {
   }
 
   @Get('random')
-  getRandomProduct(@Query('categoryId') categoryId: string) {
-    return this.productsService.getRandomProduct(Number(categoryId));
-    
-    }
+  getRandomProduct(
+    @Query('categoryId') categoryId: string,
+    @Query('excludeId') excludeId?: string,
+  ) {
+    return this.productsService.getRandomProduct(
+      Number(categoryId),
+      excludeId ? Number(excludeId) : undefined,
+    );
+  }
+
+  @Post()
+  create(
+    @Body('name') name: string,
+    @Body('productNumber') productNumber: number,
+    @Body('categoryId') categoryId: number,
+    @Body('imageUrl') imageUrl?: string,
+  ) {
+    return this.productsService.create({
+      name,
+      productNumber,
+      categoryId,
+      imageUrl,
+    });
+  }
 
   @Post('check')
   checkAnswer (

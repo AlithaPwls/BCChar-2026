@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, ElementRef, inject, Injector, OnInit, afterNextRender, signal, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../core/api';
 
@@ -10,6 +10,8 @@ import { ApiService } from '../../core/api';
 })
 export class Quiz implements OnInit {
   private api = inject(ApiService);
+  private injector = inject(Injector);
+  private answerInput = viewChild<ElementRef<HTMLInputElement>>('answerInput');
 
   categories = signal<{ id: number; name: string }[]>([]);
   categoryId = signal<number | null>(null);
@@ -52,9 +54,12 @@ export class Quiz implements OnInit {
     this.answer = null;
     this.result.set(null);
 
-    this.api.getRandomProduct(categoryId).subscribe((data) => {
+    this.api
+      .getRandomProduct(categoryId, this.product()?.id)
+      .subscribe((data) => {
       this.product.set(data as { id: number; name: string });
       this.productAnimKey.update((key) => key + 1);
+      this.focusAnswerInput();
     });
   }
 
@@ -75,10 +80,25 @@ export class Quiz implements OnInit {
     });
   }
 
+  onEnter() {
+    if (this.result()) {
+      this.loadNextProduct();
+      return;
+    }
+    this.submitAnswer();
+  }
+
   chooseOtherCategory() {
     this.categoryId.set(null);
     this.product.set(null);
     this.answer = null;
     this.result.set(null);
+  }
+
+  private focusAnswerInput() {
+    afterNextRender(
+      () => this.answerInput()?.nativeElement.focus(),
+      { injector: this.injector },
+    );
   }
 }

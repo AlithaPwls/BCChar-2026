@@ -1,0 +1,53 @@
+<section class="admin">
+  <header class="admin__brand">
+    <p class="admin__logo">Bakkerij Carl</p>
+    <a routerLink="/" class="admin__back">Terug naar quiz</a>
+  </header>
+
+  <h1 class="admin__title">Product toevoegen</h1>
+  <p class="admin__note">
+    /admin heeft nog geen login. Deel deze URL niet publiek.
+  </p>
+
+  <form class="admin__form" (ngSubmit)="save()">
+    <label class="admin__field">
+      <span>Naam</span>
+      <input name="name" [(ngModel)]="name" required />
+    </label>
+
+    <label class="admin__field">
+      <span>Nummer</span>
+      <input
+        type="number"
+        name="productNumber"
+        inputmode="numeric"
+        [(ngModel)]="productNumber"
+        required
+      />
+    </label>
+
+    <label class="admin__field">
+      <span>Categorie</span>
+      <select name="categoryId" [(ngModel)]="categoryId" required>
+        <option [ngValue]="null" disabled>Kies een categorie</option>
+        @for (category of categories(); track category.id) {
+          <option [ngValue]="category.id">{{ category.name }}</option>
+        }
+      </select>
+    </label>
+
+    <label class="admin__field">
+      <span>Afbeelding-URL (optioneel)</span>
+      <input name="imageUrl" [(ngModel)]="imageUrl" />
+    </label>
+
+    <button type="submit" class="admin__btn">Toevoegen</button>
+  </form>
+
+  @if (message()) {
+    <p class="admin__ok">{{ message() }}</p>
+  }
+  @if (error()) {
+    <p class="admin__err">{{ error() }}</p>
+  }
+</section>
